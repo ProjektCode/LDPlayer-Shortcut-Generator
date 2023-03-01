@@ -18,8 +18,13 @@ This is how you find the **PackageName** of the application - Open the File Mana
 Where the mouse cursor is hoving is how you find the **Index** of the player
 ![LDPlayer ID](https://i.imgur.com/74FtNST.png)
 
+<<<<<<< Updated upstream
 How to find the location of your LDPlayer installation for **Working Directory**
 ![LDPlayer Working Directory](https://i.imgur.com/O8YkQDt.gif)
+=======
+How to find the location of your LDPlayer installation
++<img src="/Resources/workingdir.gif?raw=true">
+>>>>>>> Stashed changes
 
 
 ## License
