@@ -1,7 +1,7 @@
 
 # LDPlayer Shortcut Generator
 
-A small program in creating a desktop shortcut for your LDPlayer apps
+A small program in creating a desktop shortcut for your LDPlayer apps. First go to the releases tab and download the latest release
 
 ## What you'll need
 
