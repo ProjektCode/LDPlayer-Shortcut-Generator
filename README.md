@@ -1,0 +1,1 @@
+# LDPlayer Shortcut Generator
