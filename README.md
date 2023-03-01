@@ -11,10 +11,6 @@ A small program in creating a desktop shortcut for your LDPlayer apps
 - **Image:** What you want the icon of the shortcut to be
 - **Index:** What ID the player you're trying to launch
 - **Description:** A small description of the shortcut, this can be left blank
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
-
 
 ## Usage/Examples
 
@@ -26,3 +22,8 @@ Image: N/A (When you click on the image button you select an image to use)
 Index: 0
 Description: Arknights Shortcut
 ```
+
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
