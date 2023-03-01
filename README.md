@@ -19,7 +19,7 @@ Where the mouse cursor is hoving is how you find the **Index** of the player
 ![LDPlayer ID](https://i.imgur.com/74FtNST.png)
 
 How to find the location of your LDPlayer installation for **Working Directory**
-![LDPlayer Working Directory](https://i.imgur.com/O8YkQDt.gif)
+![LDPlayer ID](https://i.imgur.com/O8YkQDt.gif)
 
 
 ## License
