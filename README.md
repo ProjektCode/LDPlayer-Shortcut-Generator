@@ -15,10 +15,10 @@ A small program in creating a desktop shortcut for your LDPlayer apps
 This is how you find the **PackageName** of the application - Open the File Manager > Android > data
 ![LDPlayer File Manager Screenshot](https://i.imgur.com/kJQ3VMV.png)
 
-Where the mouse cursor is hoving is how you find the Index of the player
+Where the mouse cursor is hoving is how you find the **Index** of the player
 ![LDPlayer ID](https://i.imgur.com/74FtNST.png)
 
-How to find the location of your LDPlayer installation
+How to find the location of your LDPlayer installation for **Working Directory**
 ![LDPlayer Working Directory](https://i.imgur.com/O8YkQDt.gif)
 
 
