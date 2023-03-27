@@ -105,7 +105,7 @@ Public Class ProjektCode_TextBox 'ADD ALL RELEVANT EVENTS
         End Set
     End Property
     <Category("Projekt")>
-    Shadows Property Text() As String
+    Public Overrides Property Text() As String
         Get
             If IsPlaceHolder Then
                 Return String.Empty

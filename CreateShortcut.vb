@@ -1,9 +1,14 @@
 ﻿Imports System.Drawing.Drawing2D
 Imports System.IO
+Imports System.Text.RegularExpressions
 Imports ImageMagick
 Imports IWshRuntimeLibrary
 
-Partial Public Class ShortCutInfo
+
+'To-Do List
+
+
+Partial Public Class GameInfo
     Public Property Image As Image
     Public Property PackageName As String
     Public Property Name As String
@@ -17,7 +22,10 @@ End Class
 ''' </summary>
 Public NotInheritable Class CreateShortcut
 
-    Public Shared Async Sub Create(s As ShortCutInfo)
+    Public Shared Status As Boolean
+    Public Shared Desc As String
+
+    Public Shared Async Sub Create(s As GameInfo)
 
         Try
 
@@ -28,8 +36,8 @@ Public NotInheritable Class CreateShortcut
             Dim im = Await ResizeImage(s.Image)
             Dim i = New Bitmap(im)
             Dim ImgPath = AppDomain.CurrentDomain.BaseDirectory + "temp.png"
-            Dim path = CreateFolder(s.PackageName) 'Change this to packagename param
-            Dim IconPath = path + "\Icon.ico" 'Change this to the name the user selects
+            Dim path = CreateFolder(s.PackageName)
+            Dim IconPath = path + "\Icon.ico"
 
             i.Save(ImgPath)
             i.Dispose()
@@ -43,9 +51,11 @@ Public NotInheritable Class CreateShortcut
                 s.Description = "LDPlayer Shortcut"
             End If
 
+            Dim name = Regex.Replace(s.Name, "[\/?:*""><|]+", "", RegexOptions.Compiled)
+
             Dim wsh As New WshShell()
-            Dim shortcut As IWshShortcut = TryCast(wsh.CreateShortcut(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\{s.Name}.lnk"), IWshShortcut) 'Change shortcut.lnk to nameparam.lnk
-            'Make each attribute its own param
+            Dim shortcut As IWshShortcut = TryCast(wsh.CreateShortcut(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\{name}.lnk"), IWshShortcut)
+
             shortcut.Arguments = $"launchex --index {s.Index} --packagename {s.PackageName}"
             shortcut.TargetPath = $"{s.WorkingDirectory}\ldconsole.exe"
             shortcut.Description = s.Description
@@ -54,14 +64,26 @@ Public NotInheritable Class CreateShortcut
             shortcut.Save()
 
             IO.File.Delete(ImgPath)
-            MessageBox.Show($"Shortcut for {s.Name} has been created", "Shortcut Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
+
+            'Status = "Shortcut Successful"
+            'Desc = $"Shortcut for {name} has been created."
+            'Message.Show()
+
+            Form1.pb1.BackgroundImage = Nothing
+            Status = True
+            Desc = $"Shortcut for {name} has been created"
         Catch ex As Exception
-            MessageBox.Show($"An error has occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Status = False
+            Desc = $"An error has occurred: {ex.Message}"
         End Try
 
     End Sub
 
     Public Shared Async Function ResizeImage(img As Image) As Task(Of Bitmap)
+        If img.Width <= 256 Then
+            Return New Bitmap(img)
+        End If
+
         Dim orgWidth = img.Width
         Dim orgHeight = img.Height
         Dim destinationSize = New Size(256, 256)
@@ -97,13 +119,9 @@ Public NotInheritable Class CreateShortcut
     End Function
 
     Private Shared Function CreateFolder(FolderName As String)
-        Dim dir = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + $"\LD Player\{FolderName}"
-        If Directory.Exists(dir.ToString) Then
-            Return dir
-        Else
-            Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + $"\LD Player\{FolderName}")
-            Return dir
-        End If
+        Dim dir = $"{Environment.GetFolderPath(Environment.SpecialFolder.MyPictures)}\LD Player\{FolderName}"
+        Directory.CreateDirectory(dir)
+        Return dir
     End Function
 
 End Class

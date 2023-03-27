@@ -23,6 +23,7 @@ Partial Class HelpForm
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.pnlTop = New System.Windows.Forms.Panel()
+        Me.Label6 = New System.Windows.Forms.Label()
         Me.lblImage = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
@@ -35,7 +36,6 @@ Partial Class HelpForm
         Me.ProjektCode_Separator2 = New LDPlayer_Shortcut_Generator.ProjektCode_Separator()
         Me.ProjektCode_Separator1 = New LDPlayer_Shortcut_Generator.ProjektCode_Separator()
         Me.ProjektDrag_Component1 = New LDPlayer_Shortcut_Generator.ProjektDrag_Component()
-        Me.Label6 = New System.Windows.Forms.Label()
         Me.pnlTop.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -49,6 +49,17 @@ Partial Class HelpForm
         Me.pnlTop.Size = New System.Drawing.Size(410, 43)
         Me.pnlTop.TabIndex = 0
         '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Font = New System.Drawing.Font("Roboto Cn", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label6.ForeColor = System.Drawing.Color.White
+        Me.Label6.Location = New System.Drawing.Point(4, 10)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(99, 23)
+        Me.Label6.TabIndex = 1
+        Me.Label6.Text = "HELP FORM"
+        '
         'lblImage
         '
         Me.lblImage.AutoSize = True
@@ -57,8 +68,8 @@ Partial Class HelpForm
         Me.lblImage.ForeColor = System.Drawing.Color.White
         Me.lblImage.Location = New System.Drawing.Point(0, 43)
         Me.lblImage.Name = "lblImage"
-        Me.lblImage.Padding = New System.Windows.Forms.Padding(3, 7, 0, 0)
-        Me.lblImage.Size = New System.Drawing.Size(286, 25)
+        Me.lblImage.Padding = New System.Windows.Forms.Padding(3, 10, 0, 0)
+        Me.lblImage.Size = New System.Drawing.Size(286, 28)
         Me.lblImage.TabIndex = 1
         Me.lblImage.Text = "IMAGE - Select an image to be your desired icon"
         Me.lblImage.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -69,9 +80,9 @@ Partial Class HelpForm
         Me.Label1.Dock = System.Windows.Forms.DockStyle.Top
         Me.Label1.Font = New System.Drawing.Font("Roboto Cn", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.White
-        Me.Label1.Location = New System.Drawing.Point(0, 91)
+        Me.Label1.Location = New System.Drawing.Point(0, 94)
         Me.Label1.Name = "Label1"
-        Me.Label1.Padding = New System.Windows.Forms.Padding(3, 5, 0, 0)
+        Me.Label1.Padding = New System.Windows.Forms.Padding(3, 0, 0, 0)
         Me.Label1.Size = New System.Drawing.Size(410, 66)
         Me.Label1.TabIndex = 3
         Me.Label1.Text = "PACKAGENAME - The name of the package you're trying to launch. ex) com.YoStarEN.A" &
@@ -84,7 +95,7 @@ Partial Class HelpForm
         Me.Label2.Dock = System.Windows.Forms.DockStyle.Top
         Me.Label2.Font = New System.Drawing.Font("Roboto Cn", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label2.ForeColor = System.Drawing.Color.White
-        Me.Label2.Location = New System.Drawing.Point(0, 180)
+        Me.Label2.Location = New System.Drawing.Point(0, 183)
         Me.Label2.Name = "Label2"
         Me.Label2.Padding = New System.Windows.Forms.Padding(3, 5, 0, 0)
         Me.Label2.Size = New System.Drawing.Size(273, 23)
@@ -98,7 +109,7 @@ Partial Class HelpForm
         Me.Label3.Dock = System.Windows.Forms.DockStyle.Top
         Me.Label3.Font = New System.Drawing.Font("Roboto Cn", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label3.ForeColor = System.Drawing.Color.White
-        Me.Label3.Location = New System.Drawing.Point(0, 226)
+        Me.Label3.Location = New System.Drawing.Point(0, 229)
         Me.Label3.Name = "Label3"
         Me.Label3.Padding = New System.Windows.Forms.Padding(3, 5, 0, 0)
         Me.Label3.Size = New System.Drawing.Size(410, 46)
@@ -112,7 +123,7 @@ Partial Class HelpForm
         Me.Label4.Dock = System.Windows.Forms.DockStyle.Top
         Me.Label4.Font = New System.Drawing.Font("Roboto Cn", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label4.ForeColor = System.Drawing.Color.White
-        Me.Label4.Location = New System.Drawing.Point(0, 295)
+        Me.Label4.Location = New System.Drawing.Point(0, 298)
         Me.Label4.Name = "Label4"
         Me.Label4.Padding = New System.Windows.Forms.Padding(3, 5, 0, 0)
         Me.Label4.Size = New System.Drawing.Size(333, 23)
@@ -126,7 +137,7 @@ Partial Class HelpForm
         Me.Label5.Dock = System.Windows.Forms.DockStyle.Top
         Me.Label5.Font = New System.Drawing.Font("Roboto Cn", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label5.ForeColor = System.Drawing.Color.White
-        Me.Label5.Location = New System.Drawing.Point(0, 341)
+        Me.Label5.Location = New System.Drawing.Point(0, 344)
         Me.Label5.Name = "Label5"
         Me.Label5.Padding = New System.Windows.Forms.Padding(3, 5, 0, 0)
         Me.Label5.Size = New System.Drawing.Size(410, 46)
@@ -140,7 +151,7 @@ Partial Class HelpForm
         Me.ProjektCode_Separator5.Dock = System.Windows.Forms.DockStyle.Top
         Me.ProjektCode_Separator5.ForeColor = System.Drawing.Color.White
         Me.ProjektCode_Separator5.isVertical = False
-        Me.ProjektCode_Separator5.Location = New System.Drawing.Point(0, 318)
+        Me.ProjektCode_Separator5.Location = New System.Drawing.Point(0, 321)
         Me.ProjektCode_Separator5.Name = "ProjektCode_Separator5"
         Me.ProjektCode_Separator5.Size = New System.Drawing.Size(410, 23)
         Me.ProjektCode_Separator5.TabIndex = 10
@@ -152,7 +163,7 @@ Partial Class HelpForm
         Me.ProjektCode_Separator4.Dock = System.Windows.Forms.DockStyle.Top
         Me.ProjektCode_Separator4.ForeColor = System.Drawing.Color.White
         Me.ProjektCode_Separator4.isVertical = False
-        Me.ProjektCode_Separator4.Location = New System.Drawing.Point(0, 272)
+        Me.ProjektCode_Separator4.Location = New System.Drawing.Point(0, 275)
         Me.ProjektCode_Separator4.Name = "ProjektCode_Separator4"
         Me.ProjektCode_Separator4.Size = New System.Drawing.Size(410, 23)
         Me.ProjektCode_Separator4.TabIndex = 8
@@ -164,7 +175,7 @@ Partial Class HelpForm
         Me.ProjektCode_Separator3.Dock = System.Windows.Forms.DockStyle.Top
         Me.ProjektCode_Separator3.ForeColor = System.Drawing.Color.White
         Me.ProjektCode_Separator3.isVertical = False
-        Me.ProjektCode_Separator3.Location = New System.Drawing.Point(0, 203)
+        Me.ProjektCode_Separator3.Location = New System.Drawing.Point(0, 206)
         Me.ProjektCode_Separator3.Name = "ProjektCode_Separator3"
         Me.ProjektCode_Separator3.Size = New System.Drawing.Size(410, 23)
         Me.ProjektCode_Separator3.TabIndex = 6
@@ -176,7 +187,7 @@ Partial Class HelpForm
         Me.ProjektCode_Separator2.Dock = System.Windows.Forms.DockStyle.Top
         Me.ProjektCode_Separator2.ForeColor = System.Drawing.Color.White
         Me.ProjektCode_Separator2.isVertical = False
-        Me.ProjektCode_Separator2.Location = New System.Drawing.Point(0, 157)
+        Me.ProjektCode_Separator2.Location = New System.Drawing.Point(0, 160)
         Me.ProjektCode_Separator2.Name = "ProjektCode_Separator2"
         Me.ProjektCode_Separator2.Size = New System.Drawing.Size(410, 23)
         Me.ProjektCode_Separator2.TabIndex = 4
@@ -188,7 +199,7 @@ Partial Class HelpForm
         Me.ProjektCode_Separator1.Dock = System.Windows.Forms.DockStyle.Top
         Me.ProjektCode_Separator1.ForeColor = System.Drawing.Color.White
         Me.ProjektCode_Separator1.isVertical = False
-        Me.ProjektCode_Separator1.Location = New System.Drawing.Point(0, 68)
+        Me.ProjektCode_Separator1.Location = New System.Drawing.Point(0, 71)
         Me.ProjektCode_Separator1.Name = "ProjektCode_Separator1"
         Me.ProjektCode_Separator1.Size = New System.Drawing.Size(410, 23)
         Me.ProjektCode_Separator1.TabIndex = 2
@@ -198,17 +209,6 @@ Partial Class HelpForm
         'ProjektDrag_Component1
         '
         Me.ProjektDrag_Component1.SelectedControl = Me.pnlTop
-        '
-        'Label6
-        '
-        Me.Label6.AutoSize = True
-        Me.Label6.Font = New System.Drawing.Font("Roboto Cn", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label6.ForeColor = System.Drawing.Color.White
-        Me.Label6.Location = New System.Drawing.Point(4, 10)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(99, 23)
-        Me.Label6.TabIndex = 1
-        Me.Label6.Text = "HELP FORM"
         '
         'HelpForm
         '
