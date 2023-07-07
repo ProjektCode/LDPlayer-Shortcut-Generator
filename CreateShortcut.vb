@@ -4,19 +4,6 @@ Imports System.Text.RegularExpressions
 Imports ImageMagick
 Imports IWshRuntimeLibrary
 
-
-'To-Do List
-
-
-Partial Public Class GameInfo
-    Public Property Image As Image
-    Public Property PackageName As String
-    Public Property Name As String
-    Public Property Index As Integer
-    Public Property WorkingDirectory As String
-    Public Property Description As String
-End Class
-
 ''' <summary>
 ''' Creates a desktop shortcut for a LD Player application
 ''' </summary>
@@ -25,51 +12,53 @@ Public NotInheritable Class CreateShortcut
     Public Shared Status As Boolean
     Public Shared Desc As String
 
-    Public Shared Async Sub Create(s As GameInfo)
+    Public Shared Sub Create(game As GameInfo)
 
         Try
 
-            If Not Directory.Exists(s.WorkingDirectory) Then
+            If Not Directory.Exists(game.WorkingDirectory) Then
                 Throw New DirectoryNotFoundException
             End If
 
-            Dim im = Await ResizeImage(s.Image)
+            Dim im = game.Image
             Dim i = New Bitmap(im)
-            Dim ImgPath = AppDomain.CurrentDomain.BaseDirectory + "temp.png"
-            Dim path = CreateFolder(s.PackageName)
-            Dim IconPath = path + "\Icon.ico"
+            Dim t_path = AppDomain.CurrentDomain.BaseDirectory + "temp.png"
 
-            i.Save(ImgPath)
+            i.Save(t_path)
             i.Dispose()
 
-            Using imge = New MagickImage(ImgPath)
-                imge.Write(IconPath)
-                s.Image.Dispose()
+            Dim path = CreateFolder(game.PackageName)
+            Dim IconPath = path + "\Icon.ico"
+
+            Using image = New MagickImage(t_path)
+                image.Write(IconPath)
+                game.Image.Dispose()
+                'image.Dispose()
             End Using
 
-            If s.Description = Nothing Then
-                s.Description = "LDPlayer Shortcut"
+            If game.Description = Nothing Then
+                game.Description = $"LDPlayer Shortcut for {game.Name}"
             End If
 
-            Dim name = Regex.Replace(s.Name, "[\/?:*""><|]+", "", RegexOptions.Compiled)
+            Dim name = Regex.Replace(game.Name, "[\/?:*""><|]+", "", RegexOptions.Compiled)
 
             Dim wsh As New WshShell()
             Dim shortcut As IWshShortcut = TryCast(wsh.CreateShortcut(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\{name}.lnk"), IWshShortcut)
 
-            shortcut.Arguments = $"launchex --index {s.Index} --packagename {s.PackageName}"
-            shortcut.TargetPath = $"{s.WorkingDirectory}\ldconsole.exe"
-            shortcut.Description = s.Description
-            shortcut.WorkingDirectory = s.WorkingDirectory
+            shortcut.Arguments = $"launchex --index {game.Index} --packagename {game.PackageName}"
+            shortcut.TargetPath = $"{game.WorkingDirectory}\ldconsole.exe"
+            shortcut.Description = game.Description
+            shortcut.WorkingDirectory = game.WorkingDirectory
             shortcut.IconLocation = IconPath
             shortcut.Save()
 
-            IO.File.Delete(ImgPath)
+            IO.File.Delete(t_path)
 
             'Status = "Shortcut Successful"
             'Desc = $"Shortcut for {name} has been created."
             'Message.Show()
 
-            Form1.pb1.BackgroundImage = Nothing
+            'Form1.pb1.BackgroundImage = Nothing
             Status = True
             Desc = $"Shortcut for {name} has been created"
         Catch ex As Exception

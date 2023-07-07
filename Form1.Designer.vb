@@ -32,6 +32,7 @@ Partial Class Form1
         Me.pb1 = New System.Windows.Forms.PictureBox()
         Me.ofd = New System.Windows.Forms.OpenFileDialog()
         Me.gbOptions = New System.Windows.Forms.GroupBox()
+        Me.cbDebug = New System.Windows.Forms.CheckBox()
         Me.cbPackage = New System.Windows.Forms.CheckBox()
         Me.cbWorking = New System.Windows.Forms.CheckBox()
         Me.cbIndex = New System.Windows.Forms.CheckBox()
@@ -41,7 +42,6 @@ Partial Class Form1
         Me.btnIcon = New LDPlayer_Shortcut_Generator.ProjektCode_RoundButton()
         Me.Btn_Submit = New LDPlayer_Shortcut_Generator.ProjektCode_RoundButton()
         Me.btnHelp = New LDPlayer_Shortcut_Generator.ProjektCode_RoundButton()
-        Me.lbl_Warning = New LDPlayer_Shortcut_Generator.ProjektCode_Label()
         Me.txtDesc = New LDPlayer_Shortcut_Generator.ProjektCode_TextBox()
         Me.ProjektCode_Separator5 = New LDPlayer_Shortcut_Generator.ProjektCode_Separator()
         Me.ProjektCode_Separator4 = New LDPlayer_Shortcut_Generator.ProjektCode_Separator()
@@ -53,7 +53,6 @@ Partial Class Form1
         Me.ProjektCode_Separator1 = New LDPlayer_Shortcut_Generator.ProjektCode_Separator()
         Me.txtName = New LDPlayer_Shortcut_Generator.ProjektCode_TextBox()
         Me.ProjektDrag_Component1 = New LDPlayer_Shortcut_Generator.ProjektDrag_Component()
-        Me.cbDebug = New System.Windows.Forms.CheckBox()
         Me.pnlTop.SuspendLayout()
         CType(Me.pb_Min, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pb_Close, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -173,6 +172,18 @@ Partial Class Form1
         Me.gbOptions.TabStop = False
         Me.gbOptions.Text = "Options"
         '
+        'cbDebug
+        '
+        Me.cbDebug.AutoSize = True
+        Me.cbDebug.Dock = System.Windows.Forms.DockStyle.Top
+        Me.cbDebug.Font = New System.Drawing.Font("Roboto", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cbDebug.Location = New System.Drawing.Point(3, 84)
+        Me.cbDebug.Name = "cbDebug"
+        Me.cbDebug.Size = New System.Drawing.Size(194, 17)
+        Me.cbDebug.TabIndex = 5
+        Me.cbDebug.Text = "Enable Debug"
+        Me.cbDebug.UseVisualStyleBackColor = True
+        '
         'cbPackage
         '
         Me.cbPackage.AutoSize = True
@@ -250,13 +261,13 @@ Partial Class Form1
         Me.btnSetImage.BorderSize = 0
         Me.btnSetImage.FlatAppearance.BorderSize = 0
         Me.btnSetImage.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnSetImage.Font = New System.Drawing.Font("Roboto Cn", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSetImage.Font = New System.Drawing.Font("Roboto Cn", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSetImage.ForeColor = System.Drawing.Color.White
         Me.btnSetImage.Location = New System.Drawing.Point(3, 35)
         Me.btnSetImage.Name = "btnSetImage"
         Me.btnSetImage.Size = New System.Drawing.Size(122, 26)
         Me.btnSetImage.TabIndex = 20
-        Me.btnSetImage.Text = "S E T I M A G E"
+        Me.btnSetImage.Text = "C L E A R I M A G E"
         Me.btnSetImage.TextColor = System.Drawing.Color.White
         Me.btnSetImage.UseVisualStyleBackColor = False
         '
@@ -319,16 +330,6 @@ Partial Class Form1
         Me.btnHelp.Text = "H E L P"
         Me.btnHelp.TextColor = System.Drawing.Color.White
         Me.btnHelp.UseVisualStyleBackColor = False
-        '
-        'lbl_Warning
-        '
-        Me.lbl_Warning.Font = New System.Drawing.Font("Roboto", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbl_Warning.ForeColor = System.Drawing.Color.Lime
-        Me.lbl_Warning.Location = New System.Drawing.Point(493, 57)
-        Me.lbl_Warning.Name = "lbl_Warning"
-        Me.lbl_Warning.Size = New System.Drawing.Size(135, 13)
-        Me.lbl_Warning.TabIndex = 2
-        Me.lbl_Warning.Text = "Package is okay!"
         '
         'txtDesc
         '
@@ -500,18 +501,6 @@ Partial Class Form1
         '
         Me.ProjektDrag_Component1.SelectedControl = Me.pnlTop
         '
-        'cbDebug
-        '
-        Me.cbDebug.AutoSize = True
-        Me.cbDebug.Dock = System.Windows.Forms.DockStyle.Top
-        Me.cbDebug.Font = New System.Drawing.Font("Roboto", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cbDebug.Location = New System.Drawing.Point(3, 84)
-        Me.cbDebug.Name = "cbDebug"
-        Me.cbDebug.Size = New System.Drawing.Size(194, 17)
-        Me.cbDebug.TabIndex = 5
-        Me.cbDebug.Text = "Enable Debug"
-        Me.cbDebug.UseVisualStyleBackColor = True
-        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -519,12 +508,12 @@ Partial Class Form1
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(30, Byte), Integer), CType(CType(28, Byte), Integer), CType(CType(38, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(640, 389)
         Me.Controls.Add(Me.TableLayoutPanel1)
-        Me.Controls.Add(Me.lbl_Warning)
         Me.Controls.Add(Me.gbOptions)
         Me.Controls.Add(Me.pb1)
         Me.Controls.Add(Me.gbInfo)
         Me.Controls.Add(Me.pnlTop)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "Form1"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Form1"
@@ -564,7 +553,6 @@ Partial Class Form1
     Friend WithEvents cbGames As ComboBox
     Friend WithEvents gbOptions As GroupBox
     Friend WithEvents cbName As CheckBox
-    Friend WithEvents lbl_Warning As ProjektCode_Label
     Friend WithEvents cbPackage As CheckBox
     Friend WithEvents cbWorking As CheckBox
     Friend WithEvents cbIndex As CheckBox

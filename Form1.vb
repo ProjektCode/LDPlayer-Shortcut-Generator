@@ -1,14 +1,13 @@
-﻿Imports System.Threading.Tasks
-Imports System.Net.Http
+﻿Imports System.Net.Http
 Imports System.IO
 Imports HtmlAgilityPack
 Imports Microsoft.Win32
 Imports System.Threading
-Imports System.Security.Policy
 
 Public Class Form1
     ReadOnly AppList As New List(Of String)
     ReadOnly AppNameList As New List(Of String)
+    ReadOnly ImageList As New List(Of String)
 
     Dim AppText As String
 
@@ -17,37 +16,45 @@ Public Class Form1
     Dim AppPackage As String
     Dim AppIndex As Integer
 
-    Dim ImageSet As Boolean
-    Dim ImageURL As String
+    'Dim ImageSet As Boolean
+    'Dim ImageURL As String
     Dim ImagePath As String
 
-    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Dim dir As String = If(Registry.GetValue("HKEY_CURRENT_USER\SOFTWARE\XuanZhi\LDPlayer9", "InstallDir", String.Empty), String.Empty)
-        If dir Is String.Empty Then
+    Dim dir As String
+
+    Private Async Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Dim installDir As String = If(Registry.GetValue("HKEY_CURRENT_USER\SOFTWARE\XuanZhi\LDPlayer9", "InstallDir", String.Empty), String.Empty)
+        If installDir Is String.Empty Then
             MessageBox.Show("LDPlayer Can not be found")
         Else
-            txtWorking.Text = dir
+            txtWorking.Text = installDir
             txtWorking.Enabled = False
             txtIndex.Enabled = False
             txtName.Enabled = False
             txtPackage.Enabled = False
 
-            AppDir = dir
+            AppDir = installDir
             AppIndex = 0
 
-            AppText = File.ReadAllText(dir + "AppNames.text")
+            AppText = File.ReadAllText(installDir + "AppNames.text")
             txtIndex.Text = AppIndex.ToString
             GrabGames()
 
-            cbGames.SelectedIndex = 0
-            pb1.Load(GrabGoogleImage(AppList(cbGames.SelectedIndex)))
+            'cbGames.SelectedIndex = 0
+            'pb1.Load(GrabGoogleImage(AppList(cbGames.SelectedIndex)))
 
+            Await DownloadGoogleImages()
         End If
 
     End Sub
 
 
     Private Sub pb_Close_Click(sender As Object, e As EventArgs) Handles pb_Close.Click
+        pb1.BackgroundImage = Nothing
+        For Each i In ImageList
+            File.Delete(i)
+        Next
+
         Me.Close()
     End Sub
 
@@ -55,11 +62,17 @@ Public Class Form1
         Me.WindowState = FormWindowState.Minimized
     End Sub
 
-    Private Sub btnIcon_Click(sender As Object, e As EventArgs) Handles btnIcon.Click
+    Private Async Sub btnIcon_ClickAsync(sender As Object, e As EventArgs) Handles btnIcon.Click
+        pb1.ImageLocation = Nothing
+        pb1.Image = Nothing
+        pb1.BackgroundImage = Nothing
+
         ofd.Filter = "Image Files|*.jpg;*.jpeg;*.png;"
         If ofd.ShowDialog = DialogResult.OK Then
             ImagePath = ofd.FileName
-            pb1.BackgroundImage = CreateShortcut.ResizeImage(New Bitmap(ImagePath)).Result
+            pb1.BackgroundImage = Await CreateShortcut.ResizeImage(New Bitmap(ImagePath))
+            'pb1.Image = Await CreateShortcut.ResizeImage(New Bitmap(ImagePath))
+            'ImageSet = True
         Else
             MessageBox.Show("Please select an image.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End If
@@ -71,15 +84,19 @@ Public Class Form1
         End If
     End Sub
 
-    Private Async Sub Btn_Submit_Click(sender As Object, e As EventArgs) Handles Btn_Submit.Click
+    Private Sub Btn_Submit_Click(sender As Object, e As EventArgs) Handles Btn_Submit.Click
 
-        If ImageSet = True Then
-            'Await SaveImage(ImageURL)
-            pb1.BackgroundImage = Await FetchImageAsync(ImageURL)
-            File.Delete(ImagePath)
-        Else
-            MessageBox.Show("An image has not been set", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End If
+        'If ImageSet = True Then
+        '    'Await SaveImage(ImageURL)
+        '    If pb1.BackgroundImage Is Nothing Then
+        '        pb1.BackgroundImage = Await CreateShortcut.ResizeImage(New Bitmap(Await FetchImageAsync(ImageURL)))
+        '    Else
+        '        pb1.Image = Nothing
+        '    End If
+        '    'File.Delete(ImagePath)
+        'Else
+        '    MessageBox.Show("An image has not been set", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        'End If
         Thread.Sleep(1500)
 
         If cbDebug.Checked = True Then
@@ -157,8 +174,9 @@ Public Class Form1
 
     Private Sub GrabGames()
 
-        Dim _AppList = AppText.Split("|").ToList()
-        _AppList.RemoveAll(Function(x) x.Contains("�"))
+        Dim t_AppList = AppText.Split("|").ToList()
+        t_AppList.RemoveAll(Function(x) x.Contains("�"))
+        Dim _Applist = t_AppList.GroupBy(Function(x) x.ToLower).Select(Function(d) d.First).ToList
 
         'For Each a In _AppList
         '    Dim index As Integer = a.IndexOf(":")
@@ -173,13 +191,17 @@ Public Class Form1
         '    AppNameList.Add(_name.Substring(_name.IndexOf(":") + 1))
         'Next
 
-        For Each app In _AppList
+        For Each app In _Applist
             If Not app.Contains("android") And Not app.Contains("filemanager") And Not app.Contains("com.google") Then
-                AppNameList.Add(app.Substring(app.IndexOf(":") + 1))
+                If Not app = String.Empty Then
 
-                Dim index As Integer = app.IndexOf(":")
-                If index >= 0 Then
-                    AppList.Add(app.Substring(0, index))
+                    AppNameList.Add(app.Substring(app.IndexOf(":") + 1))
+
+                    Dim index As Integer = app.IndexOf(":")
+                    If index >= 0 Then
+                        AppList.Add(app.Substring(0, index))
+                    End If
+
                 End If
             End If
         Next
@@ -189,49 +211,55 @@ Public Class Form1
         Next
     End Sub
 
-    Private Function GrabGoogleImage(package As String)
-        Dim web As New HtmlWeb
-        Dim doc = web.Load($"https://play.google.com/store/apps/details?id={package}")
-        Dim rootNode = doc.DocumentNode
-        Dim nodes = rootNode.SelectNodes("//img")
-        Dim img As String = String.Empty
-        For Each i In nodes
-            If i.Attributes("src").Value.Contains("=s48") Then
-                'Dim list As New List(Of String)
-                Dim _img As String = i.Attributes("src").Value
-                img = _img.Replace("=s48", "=s128")
-            End If
-            'List.Add(i.Attributes("src").Value)
-        Next
-        ImageURL = img
-        Return img
-    End Function
+    'Private Function GrabGoogleImage(package As String)
+    '    Dim web As New HtmlWeb
+    '    Dim doc = web.Load($"https://play.google.com/store/apps/details?id={package}")
+    '    Dim rootNode = doc.DocumentNode
+    '    Dim nodes = rootNode.SelectNodes("//img")
+    '    Dim img As String = String.Empty
+    '    For Each i In nodes
+    '        If i.Attributes("src").Value.Contains("=s48") Then
+    '            'Dim list As New List(Of String)
+    '            Dim _img As String = i.Attributes("src").Value
+    '            img = _img.Replace("=s48", "=s128")
+    '        End If
+    '        'List.Add(i.Attributes("src").Value)
+    '    Next
+    '    ImageURL = img
+    '    Return img
+    'End Function
 
     Private Sub cbGames_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbGames.SelectedIndexChanged
-        Dim u = GrabGoogleImage(AppList(cbGames.SelectedIndex))
+        'Dim u = GrabGoogleImage(AppList(cbGames.SelectedIndex))
+
+        'Try
+        '    pb1.Load(u)
+        '    ImageSet = True
+        'Catch ex As Exception
+        '    ImageSet = False
+        '    pb1.Load("https://i.imgur.com/Kl2Qrd2.png")
+        'End Try
 
         Try
-            pb1.Load(u)
-            ImageSet = True
+            pb1.BackgroundImage = Image.FromFile(dir + AppList(cbGames.SelectedIndex) + ".png")
         Catch ex As Exception
-            ImageSet = False
-            pb1.Load("https://i.imgur.com/Kl2Qrd2.png")
+            MessageBox.Show(ex.Message)
         End Try
 
-        If ImageSet = False Then
-            lbl_Warning.ForeColor = Color.Crimson
-            lbl_Warning.Text = "Package Check Needed! If Okay Image Couldn't Be Found."
-            If Not cbPackage.Checked = True Then
-                cbPackage.Checked = True
-            End If
-        Else
-            lbl_Warning.ForeColor = Color.Lime
-            lbl_Warning.Text = "Package Check Passed!"
-            ImageURL = u
-            If Not cbPackage.Checked = False Then
-                cbPackage.Checked = False
-            End If
-        End If
+        'If ImageSet = False Then
+        '    lbl_Warning.ForeColor = Color.Crimson
+        '    lbl_Warning.Text = "Package Check Needed! If Okay Image Couldn't Be Found."
+        '    If Not cbPackage.Checked = True Then
+        '        cbPackage.Checked = True
+        '    End If
+        'Else
+        '    lbl_Warning.ForeColor = Color.Lime
+        '    lbl_Warning.Text = "Package Check Passed!"
+        '    'ImageURL = u
+        '    If Not cbPackage.Checked = False Then
+        '        cbPackage.Checked = False
+        '    End If
+        'End If
 
         Dim _AppName = cbGames.SelectedItem.ToString
         Dim _AppPackage = AppList(cbGames.SelectedIndex)
@@ -266,7 +294,7 @@ Public Class Form1
                 'Return Image.FromStream(backupStream)
                 img = Image.FromStream(backupStream)
                 img.Save(ImagePath)
-                ImageSet = True
+                'ImageSet = True
                 Return img
             End If
 
@@ -274,9 +302,71 @@ Public Class Form1
             'Return Image.FromStream(stream)
             img = Image.FromStream(stream)
             img.Save(ImagePath)
-            ImageSet = True
+            'ImageSet = True
             Return img
         End Using
+    End Function
+
+    Private Async Function DownloadGoogleImages() As Task
+
+        If Not Directory.Exists($"{AppDomain.CurrentDomain.BaseDirectory}Images\") Then
+            dir = $"{AppDomain.CurrentDomain.BaseDirectory}Images\"
+            Directory.CreateDirectory(dir)
+        Else
+            dir = $"{AppDomain.CurrentDomain.BaseDirectory}Images\"
+        End If
+
+        Try
+
+            For Each package In AppList
+
+                Dim web As New HtmlWeb
+                Dim doc = web.Load($"https://play.google.com/store/apps/details?id={package}")
+                Dim rootNode = doc.DocumentNode
+                Dim nodes = rootNode.SelectNodes("//img")
+                Dim img As String = String.Empty
+                For Each i In nodes
+                    If i.Attributes("src").Value.Contains("=s48") Then
+                        'Dim list As New List(Of String)
+                        Dim _img As String = i.Attributes("src").Value
+                        img = _img.Replace("=s48", "=s128")
+                        Exit For
+                    End If
+                Next
+
+                If img = String.Empty Then
+                    img = "https://i.imgur.com/Kl2Qrd2.png"
+                End If
+
+                'ImagePath = Path.Combine(dir, $"{package}.png")
+                ImagePath = $"{dir}/{package}.png"
+                If Not File.Exists(ImagePath) Then
+
+                    Using client As New HttpClient
+                        Dim response = Await client.GetAsync(img)
+                        Dim i As Image
+                        If Not response.IsSuccessStatusCode Then
+                            Dim backupResponse = Await client.GetAsync("https://i.imgur.com/Kl2Qrd2.png")
+                            Dim backupStream = Await backupResponse.Content.ReadAsStreamAsync
+                            i = Image.FromStream(backupStream)
+                            i.Save(ImagePath)
+                            'ImageSet = True
+                        End If
+
+                        Dim stream = Await response.Content.ReadAsStreamAsync
+                        'Return Image.FromStream(stream)
+                        i = Image.FromStream(stream)
+                        i.Save(ImagePath)
+                        'ImageSet = True
+                    End Using
+
+                End If
+                ImageList.Add(ImagePath)
+            Next
+
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
     End Function
 
     Private Sub txtName_TextChanged(sender As Object, e As EventArgs) Handles txtName.TextChanged
@@ -328,8 +418,7 @@ Public Class Form1
     End Sub
 
     Private Sub btnSetImage_Click(sender As Object, e As EventArgs) Handles btnSetImage.Click
-        pb1.Load(GrabGoogleImage(txtPackage.Text))
-        ImageSet = True
+        pb1.BackgroundImage = Nothing
     End Sub
 
     Private Sub txtIndex_KeyPress(sender As Object, e As EventArgs) Handles txtIndex.KeyPress
