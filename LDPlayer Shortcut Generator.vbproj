@@ -127,7 +127,7 @@
     <Compile Include="Controls\ProjektCode-TextBox.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CreateShortcut.vb" />
+    <Compile Include="Classes\CreateShortcut.vb" />
     <Compile Include="Form1.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -135,7 +135,7 @@
       <DependentUpon>Form1.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GameInfo.vb" />
+    <Compile Include="Classes\GameInfo.vb" />
     <Compile Include="HelpForm.Designer.vb">
       <DependentUpon>HelpForm.vb</DependentUpon>
     </Compile>

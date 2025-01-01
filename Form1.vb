@@ -421,7 +421,4 @@ Public Class Form1
         pb1.BackgroundImage = Nothing
     End Sub
 
-    Private Sub txtIndex_KeyPress(sender As Object, e As EventArgs) Handles txtIndex.KeyPress
-
-    End Sub
 End Class
